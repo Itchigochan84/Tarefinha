@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz do Terceirão</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #resultado {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="quiz">
+        <h2 id="pergunta">Carregando pergunta...</h2>
+        <button id="btnA" onclick="responder('A')">Opção A</button>
+        <button id="btnB" onclick="responder('B')">Opção B</button>
+    </div>
+    <div id="resultado" style="display: none;">
+        <h2>Seu Perfil de Estudante:</h2>
+        <p id="texto-resultado"></p>
+        <button onclick="reiniciar()">Refazer Quiz</button>
+    </div>
+</div>
+
+<script>
+    // Perguntas voltadas para o último ano do Ensino Médio
+    const perguntas = [
+        {
+            texto: "Como você prefere organizar seus estudos para o ENEM/Vestibular?",
+            A: "Seguindo um cronograma fixo e planejado.",
+            B: "Estudando o que sinto vontade no dia."
+        },
+        {
+            texto: "Qual o seu método favorito para fixar o conteúdo?",
+            A: "Fazer muitos exercícios e simulados antigos.",
+            B: "Ler resumos, ver videoaulas e fazer anotações."
+        },
+        {
+            texto: "Quando você encontra uma matéria muito difícil, o que faz?",
+            A: "Insisto nela até entender, buscando novas fontes.",
+            B: "Pulo para outra matéria para não perder tempo."
+        },
+        {
+            texto: "Como está sua rotina de redação?",
+            A: "Escrevo pelo menos uma redação por semana.",
+            B: "Deixo para treinar mais perto da data da prova."
+        }
+    ];
+
+    let indiceAtual = 0;
+    let pontosA = 0;
+    let pontosB = 0;
+
+    function mostrarPergunta() {
+        if (indiceAtual < perguntas.length) {
+            document.getElementById("pergunta").innerText = perguntas[indiceAtual].texto;
+            document.getElementById("btnA").innerText = perguntas[indiceAtual].A;
+            document.getElementById("btnB").innerText = perguntas[indiceAtual].B;
+        } else {
+            mostrarResultado();
+        }
+    }
+
+    function responder(alternativa) {
+        if (alternativa === 'A') pontosA++;
+        if (alternativa === 'B') pontosB++;
+        
+        indiceAtual++;
+        mostrarPergunta();
+    }
+
+    function mostrarResultado() {
+        document.getElementById("quiz").style.display = "none";
+        document.getElementById("resultado").style.display = "block";
+        
+        let perfil = "";
+        if (pontosA > pontosB) {
+            perfil = "Estudante Estrategista! Você é focado, gosta de rotina, organização e foca na prática. Tem grandes chances de manter a calma e dominar o tempo da prova!";
+        } else if (pontosB > pontosA) {
+            perfil = "Estudante Visual/Espontâneo! Você prefere absorver a teoria primeiro e flui melhor sem tanta pressão. Só cuidado para não acumular matéria nessa reta final!";
+        } else {
+            perfil = "Estudante Equilibrado! Você consegue mesclar planejamento com flexibilidade. Sabe a hora de focar na teoria e a hora de ir para os exercícios.";
+        }
+        
+        document.getElementById("texto-resultado").innerText = perfil;
+    }
+
+    function reiniciar() {
+        indiceAtual = 0;
+        pontosA = 0;
+        pontosB = 0;
+        document.getElementById("quiz").style.display = "block";
+        document.getElementById("resultado").style.display = "none";
+        mostrarPergunta();
+    }
+
+    // Inicia o quiz ao carregar a página
+    mostrarPergunta();
+</script>
+
+</body>
+</html>
